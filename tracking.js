@@ -66,7 +66,7 @@ function handleClick(event) {
     }
   }
   if (totalRound > 24) {
-    renderChart();
+     renderChart();
     // alert('place chart here');
   } else {
     renderPictureGen();

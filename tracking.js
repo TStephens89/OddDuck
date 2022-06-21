@@ -1,9 +1,11 @@
 'use strict';
 let pictureFiles = document.querySelectorAll('img');
+let chartEl = document.getElementById('myChart');
+let ctx = chartEl.getContext('2d');
 // let clicks = 0;
 // let views = 0;
-
-let pictureName = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.png', 'tauntaun.jpg', 'unicorn.jpg', 'water-can.jpg', 'wine-glass.jpg'];
+let totalRound = 0;
+let pictureName = ['bag.jpg', 'banana.jpg', 'bathroom.jpg', 'boots.jpg', 'breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg', 'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg', 'shark.jpg', 'sweep.jpg', 'tauntaun.jpg', 'unicorn.jpg', 'water-can.jpg', 'wine-glass.jpg'];
 // let product1 = document.getElementById('product1');
 // let product2 = document.getElementById('product2');
 // let product3 = document.getElementById('product3');
@@ -12,76 +14,101 @@ function Product(pictureName) {
   this.clicks = 0;
   this.views = 0;
   this.id = pictureName;
-  this.src = `./assets/${pictureName}.jpg`;
-  allProducts.push(this);
-
+  this.src = `./assets/${pictureName}`;
+  // allProducts.push(this);
 }
-new Product('bag');
-new Product('banana');
-new Product('bathroom');
-new Product('boots');
-new Product('breakfast');
-new Product('bubblegum');
-new Product('chair');
-new Product('cthulhu');
-new Product('dog-duck');
-new Product('dragon');
-new Product('pen');
-new Product('pet-sweep');
-new Product('scissors');
-new Product('shark');
-new Product('sweep');
-new Product('tauntaun');
-new Product('unicorn');
-new Product('water-can');
-new Product('wine-glass');
+Product.prototype.handleClick = function () {
+
+};
+for (let i = 0; i < pictureName.length; i++) {
+  allProducts.push(new Product(pictureName[i]));
+}
+
+
 
 
 function randomPictureGen() {
-  let index =  Math.floor(Math.random() * allProducts.length);
+  let index = Math.floor(Math.random() * allProducts.length);
   return allProducts[index];
 
 }
 console.log(allProducts);
-// function renderPictureGen() {
-// let productArray=[];
-allProducts[0] = randomPictureGen();
-allProducts[1] = randomPictureGen();
-allProducts[2] = randomPictureGen();
-// console.log(allProducts)
-for (let i = 0; i < pictureName.length; i++) {
-  allProducts.push(new Product(pictureFiles[i]));
+function renderPictureGen() {
+  // let productArray=[];
+  let product1 = randomPictureGen();
+  let product2 = randomPictureGen();
+  let product3 = randomPictureGen();
+  while (product1.id === product2.id || product1.id === product3.id || product2.id === product3.id) {
+    product1 = randomPictureGen();
+    product2 = randomPictureGen();
+    product3 = randomPictureGen();
+  }
+  // console.log(allProducts)
+  // for (let i = 0; i < pictureName.length; i++) {
+  //   allProducts.push(new Product(pictureFiles[i]));
+  // }
+  pictureFiles[0].id = product1.id;
+  pictureFiles[0].src = product1.src;
+  allProducts[0].views++;
+  pictureFiles[1].id = product2.id;
+  pictureFiles[1].src = product2.src;
+  allProducts[1].views++;
+  pictureFiles[2].id = product3.id;
+  pictureFiles[2].src = product3.src;
+  allProducts[2].views++;
 }
-pictureFiles[0].id = allProducts[0].id;
-pictureFiles[0].src =allProducts[0].src;
-allProducts[0].views++;
-pictureFiles[1].id = allProducts[1].id;
-pictureFiles[1].src =allProducts[1].src;
-allProducts[1].views++;
-pictureFiles[2].id = allProducts[2].id;
-pictureFiles[2].src =allProducts[2].src;
-allProducts[2].views++;
-while (allProducts[0]===allProducts[1]){
-  allProducts[1] = randomPictureGen();
-}
-while (allProducts[1]===allProducts[2]){
-  allProducts[2] = randomPictureGen();
-}
-while (allProducts[2]===allProducts[0]){
-  allProducts[0] = randomPictureGen();
-}
+renderPictureGen();
 function handleClick(event) {
-  for (let i = 0; i < allProducts.length; i++){
-    console.log(event.target.id, allProducts[i].id);
+  for (let i = 0; i < allProducts.length; i++) {
+    // console.log(event.target.id, allProducts[i].id);
     if (event.target.id === allProducts[i].id) {
       allProducts[i].clicks++;
     }
   }
+  if (totalRound > 4) {
+    renderChart();
+    // alert('place chart here');
+  } else {
+    renderPictureGen();
+    totalRound++;
+    console.log(totalRound);
+
+  }
+  // let newImages = document.getElementById('images');
+  // newImages.innerHTML = 'You have reached your voting limit!';
+  // return;
 }
 
-pictureFiles.forEach(function (img){
+pictureFiles.forEach(function (img) {
   img.addEventListener('click', handleClick);
 });
+function renderChart() {
+  // generate our click data, generate our view data
+  // loop through our images
+  let clicks = [];
+  let views = [];
+
+  for (let i = 0; i < allProducts.length; i++) {
+    clicks.push(allProducts[i].clicks);
+    views.push(allProducts[i].views);
+  }
+  new Chart (ctx, {
+    type: 'bar',
+    data: {
+      labels: pictureName,
+      datasets: [{
+        label: '# of Clicks',
+        data: clicks,
+        backgroundColor: 'yellow'
+      }, {
+        label: '# of Views',
+        data: views,
+        backgroundColor: 'purple'
+      }],
+    }
+  });
+
+}
 
 // renderPictureGen();
 

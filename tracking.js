@@ -65,7 +65,7 @@ function handleClick(event) {
       allProducts[i].clicks++;
     }
   }
-  if (totalRound > 4) {
+  if (totalRound > 24) {
     renderChart();
     // alert('place chart here');
   } else {

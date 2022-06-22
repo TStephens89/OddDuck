@@ -65,8 +65,9 @@ function handleClick(event) {
       allProducts[i].clicks++;
     }
   }
-  if (totalRound > 24) {
-     renderChart();
+  if (totalRound > 4) {
+    renderChart();
+
     // alert('place chart here');
   } else {
     renderPictureGen();
@@ -74,6 +75,7 @@ function handleClick(event) {
     console.log(totalRound);
 
   }
+
   // let newImages = document.getElementById('images');
   // newImages.innerHTML = 'You have reached your voting limit!';
   // return;
@@ -92,7 +94,25 @@ function renderChart() {
     clicks.push(allProducts[i].clicks);
     views.push(allProducts[i].views);
   }
-  new Chart (ctx, {
+  saveStorage();
+
+  function saveStorage() {
+    let arrayString = JSON.stringify(allProducts);
+    console.log('saveStorage', arrayString);
+    localStorage.setItem('save', arrayString);
+
+  }
+  function retieveSaveStorage() {
+    // retrieve data from local storage
+    let data = localStorage.getItem('save');
+    console.log('retrieveSavedStorage', data);
+    let productData = JSON.parse(data);
+
+
+    allProducts = productData;
+  }
+  retieveSaveStorage();
+  new Chart(ctx, {
     type: 'bar',
     data: {
       labels: pictureName,

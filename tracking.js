@@ -49,13 +49,13 @@ function renderPictureGen() {
   // }
   pictureFiles[0].id = product1.id;
   pictureFiles[0].src = product1.src;
-  allProducts[0].views++;
+  product1.views++;
   pictureFiles[1].id = product2.id;
   pictureFiles[1].src = product2.src;
-  allProducts[1].views++;
+  product2.views++;
   pictureFiles[2].id = product3.id;
   pictureFiles[2].src = product3.src;
-  allProducts[2].views++;
+  product3.views++;
 }
 renderPictureGen();
 function handleClick(event) {

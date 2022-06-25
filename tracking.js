@@ -66,6 +66,7 @@ function handleClick(event) {
     }
   }
   if (totalRound > 24) {
+    alert('thank you for completing our study ');
     renderChart();
 
     // alert('place chart here');
@@ -119,11 +120,11 @@ function renderChart() {
       datasets: [{
         label: '# of Clicks',
         data: clicks,
-        backgroundColor: 'yellow'
+        backgroundColor: '#04b3d5'
       }, {
         label: '# of Views',
         data: views,
-        backgroundColor: 'purple'
+        backgroundColor: '#ffcc85'
       }],
     }
   });
